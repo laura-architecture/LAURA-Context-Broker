@@ -1,0 +1,40 @@
+package scene;
+
+import models.context.*;
+
+import br.ufes.inf.lprm.scene.model.Situation;
+import br.ufes.inf.lprm.situation.bindings.*;
+import br.ufes.inf.lprm.situation.model.Participation;
+import br.ufes.inf.lprm.situation.model.SituationType;
+import br.ufes.inf.lprm.scene.util.SituationHelper;
+
+import akka.event.LoggingAdapter;
+
+global LoggingAdapter logger
+
+declare Fever extends Situation
+    febrile: Entity @part @key
+end
+
+rule "Fever"
+@role(situation)
+@type(Fever)
+    when
+        febrile: Entity(kind == "Person")
+        IntrinsicContext(  bearer == febrile,
+                           kind == "Temperature",
+                           value!.entries["value"].asNumber > 37.0)
+    then
+    	SituationHelper.situationDetected(drools);
+end
+
+rule "Participation"
+    when
+        participation: Participation()
+    then
+    	logger.info("'{}' takes part as a '{}' in '{}' of type '{}'", participation.getActor(), participation.getPart().getLabel(), participation.getSituation(), participation.getSituation().getType());
+end
+
+
+
+

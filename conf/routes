@@ -1,0 +1,35 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+### Context Broker API
+POST    /entities                                                       controllers.ContextBrokerController.registerEntity
+POST    /entities/:entityId/contexts                                    controllers.ContextBrokerController.registerIntrinsicContext(entityId: Long)
+POST    /entities/:entityId/contexts/:contextId/values                  controllers.ContextBrokerController.registerContextValue(entityId: Long, contextId: Long)
+GET     /entities                                                       controllers.ContextBrokerController.getEntities
+GET     /entities/:entityId/contexts                                    controllers.ContextBrokerController.getContext(entityId: Long)
+POST    /entities/:entityId/attributes                                  controllers.ContextBrokerController.registerAttribute(entityId: Long)
+GET     /entities/:entityId/attributes                                  controllers.ContextBrokerController.getAttributes(entityId: Long)
+#POST    /entities/:entityId/attributes/:attributeId                     controllers.ContextBrokerController.getAttributes
+#GET     /entities/:entityId/attributes/:attributeId                     controllers.ContextBrokerController.getAttributes(entityId: Long)
+#GET     /relations?part=${label}&entityId=${id}&entityKind=${kind}      controllers.ContextBrokerController.getContext
+
+POST    /relations                                                      controllers.ContextBrokerController.createRelationalContext
+GET     /relations/:relationId                                          controllers.ContextBrokerController.getRelationById(relationId: Long)
+POST    /relations/:relationId/values                                   controllers.ContextBrokerController.registerRelationValue(relationId: Long)
+
+### PersistentSituation Upload API
+# POST    /situations/upload                                            controllers.SituationBrokerController.uploadDRL
+GET     /situations                                                     controllers.SituationBrokerController.getSituations
+GET     /situations/:situationId                                        controllers.SituationBrokerController.getSituation(situationId: Long)
+#GET     /situations?type=${type}                                       controllers.SituationBrokerController.getSituations
+GET     /ws/situations                                                  controllers.SituationSubscriptionController.subscribe
+
+### PersistentSituation Subscription API
+#POST    /situations/subscriptions                                       controllers.SituationSubscriptionController.registerSubscription
+#GET     /situations/subscriptions                                       controllers.SituationSubscriptionController.getSubscriptions
+#GET     /situations/subscriptions/:subscriptionId                       controllers.SituationSubscriptionController.getSubscription(subscriptionId: String)
+#WS      #/situations/subscriptions/:subscriptionId/ws
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
